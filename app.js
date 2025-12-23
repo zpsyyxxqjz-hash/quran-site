@@ -9,7 +9,6 @@ const seekSlider = document.getElementById('seek-slider');
 const currentTimeSpan = document.getElementById('current-time');
 const durationTimeSpan = document.getElementById('duration-time');
 
-// تحميل قائمة السور
 async function loadSurahList() {
     try {
         const res = await fetch('https://api.alquran.cloud/v1/surah');
@@ -26,7 +25,6 @@ async function loadSurahList() {
     }
 }
 
-// تحميل سورة
 async function loadSurah(id, name) {
     quranArea.innerHTML = `<p>جاري تحميل سورة ${name}...</p>`;
     lastRead.textContent = `آخر ما قرأت: ${name}`;
@@ -48,9 +46,9 @@ function playAudio(surahId) {
     const reciter = reciterSelect.value;
     audioPlayer.src = `https://cdn.islamic.network/quran/audio-surah/128/${reciter}/${surahId}.mp3`;
     audioPlayer.play();
+    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
 }
 
-// التحكم في المشغل المخصص
 playPauseBtn.onclick = () => {
     if (audioPlayer.paused) {
         audioPlayer.play();
@@ -86,3 +84,4 @@ window.onload = () => {
     const saved = JSON.parse(localStorage.getItem('lastSurah'));
     if (saved) lastRead.textContent = `آخر ما قرأت: ${saved.name}`;
 };
+
