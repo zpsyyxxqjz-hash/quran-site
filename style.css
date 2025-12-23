@@ -1,4 +1,4 @@
-
+:root {
     --primary: #004d4d;
     --gold: #D4AF37;
     --bg: #fdfdfd;
@@ -48,15 +48,6 @@ body {
     border-bottom: 1px solid #ddd;
 }
 
-.actions select, .actions button {
-    font-family: 'Amiri', serif;
-    padding: 6px 10px;
-    border: 1px solid var(--gold);
-    background: transparent;
-    color: inherit;
-    cursor: pointer;
-}
-
 .quran-container {
     flex: 1;
     overflow-y: auto;
@@ -92,8 +83,6 @@ body {
     transition: 0.3s;
 }
 
-.main-play-btn:hover { transform: scale(1.1); }
-
 .progress-container {
     width: 100%;
     max-width: 700px;
@@ -110,3 +99,4 @@ body {
 }
 
 body.dark .side-menu { background: #120022; }
+
