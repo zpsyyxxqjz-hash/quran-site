@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>المصحف الشريف</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -39,8 +40,16 @@
       <p>اختر سورة من القائمة</p>
     </section>
 
-    <footer class="audio-panel">
-      <audio id="audio-player" controls></audio>
+    <footer class="modern-audio-player">
+      <div class="player-controls">
+          <button id="play-pause-btn" class="main-play-btn"><i class="fas fa-play"></i></button>
+      </div>
+      <div class="progress-container">
+          <span id="current-time">0:00</span>
+          <input type="range" id="seek-slider" class="seek-slider" max="100" value="0">
+          <span id="duration-time">0:00</span>
+      </div>
+      <audio id="audio-player" style="display:none;"></audio>
     </footer>
   </main>
 </div>
