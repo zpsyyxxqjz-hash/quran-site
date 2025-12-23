@@ -9,9 +9,7 @@ body.dark {
     --bg: #0a0a0a;
 }
 
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
     margin: 0;
@@ -20,12 +18,8 @@ body {
     color: var(--primary);
 }
 
-.app-shell {
-    display: flex;
-    height: 100vh;
-}
+.app-shell { display: flex; height: 100vh; }
 
-/* القائمة */
 .side-menu {
     width: 300px;
     background: #003333;
@@ -33,16 +27,9 @@ body {
     overflow-y: auto;
 }
 
-.gold-text {
-    color: var(--gold);
-    text-align: center;
-}
+.gold-text { color: var(--gold); text-align: center; }
 
-.surah-navigation {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
+.surah-navigation { list-style: none; padding: 0; margin: 0; }
 
 .surah-navigation li {
     padding: 15px 25px;
@@ -50,16 +37,9 @@ body {
     border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-.surah-navigation li:hover {
-    background: rgba(212,175,55,0.2);
-}
+.surah-navigation li:hover { background: rgba(212,175,55,0.2); }
 
-/* المحتوى */
-.main-display {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
+.main-display { flex: 1; display: flex; flex-direction: column; }
 
 .top-nav {
     display: flex;
@@ -68,8 +48,7 @@ body {
     border-bottom: 1px solid #ddd;
 }
 
-.actions select,
-.actions button {
+.actions select, .actions button {
     font-family: 'Amiri', serif;
     padding: 6px 10px;
     border: 1px solid var(--gold);
@@ -87,21 +66,47 @@ body {
     line-height: 2.6;
 }
 
-.ayah {
-    margin: 0 4px;
+.ayah { margin: 0 4px; }
+.ayah-num { color: var(--gold); font-size: 20px; }
+
+/* تصميم المشغل العصري المضاف */
+.modern-audio-player {
+    background: #002222;
+    padding: 15px 30px;
+    border-top: 3px solid var(--gold);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
 
-.ayah-num {
-    color: var(--gold);
+.main-play-btn {
+    background: var(--gold);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: #002222;
     font-size: 20px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-.audio-panel {
-    border-top: 2px solid var(--gold);
-    padding: 10px;
+.main-play-btn:hover { transform: scale(1.1); }
+
+.progress-container {
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: white;
 }
 
-/* الوضع الليلي */
-body.dark .side-menu {
-    background: #120022;
+.seek-slider {
+    flex: 1;
+    accent-color: var(--gold);
+    cursor: pointer;
 }
+
+body.dark .side-menu { background: #120022; }
