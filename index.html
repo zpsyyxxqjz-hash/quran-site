@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>المصحف الشريف</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
@@ -13,31 +14,34 @@
 
 <div class="app">
 
-<aside class="side">
-<h1>المصحف الشريف</h1>
-<ul id="surah-list">جاري التحميل...</ul>
-</aside>
+    <aside class="sidebar">
+        <h1>📖 المصحف الشريف</h1>
+        <ul id="surah-list">جاري التحميل...</ul>
+    </aside>
 
-<main>
-<header>
-<span id="status">اختر سورة</span>
-<select id="reciter">
-<option value="ar.minshawi">المنشاوي</option>
-<option value="ar.alafasy">العفاسي</option>
-<option value="ar.husary">الحصري</option>
-<option value="ar.shaatree">الشاطري</option>
-<option value="ar.saoodshuraym">الشريم</option>
-</select>
-</header>
+    <main class="content">
+        <header>
+            <span id="status">اختر سورة</span>
+            <select id="reciter">
+                <option value="ar.minshawi">المنشاوي</option>
+                <option value="ar.alafasy">العفاسي</option>
+                <option value="ar.husary">الحصري</option>
+                <option value="ar.shaatree">الشاطري</option>
+                <option value="ar.saoodshuraym">الشريم</option>
+            </select>
+        </header>
 
-<section id="quran"></section>
+        <section id="quran"></section>
 
-<footer>
-<button id="play">▶</button>
-<audio id="audio"></audio>
-</footer>
-</main>
+        <!-- مشغل عصري -->
+        <div class="player">
+            <button id="play">▶</button>
+            <input type="range" id="seek" value="0">
+            <span id="time">0:00</span>
+            <audio id="audio"></audio>
+        </div>
 
+    </main>
 </div>
 
 <script src="app.js"></script>
