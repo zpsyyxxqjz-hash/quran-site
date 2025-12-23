@@ -1,102 +1,18 @@
-:root {
-    --primary: #004d4d;
-    --gold: #D4AF37;
-    --bg: #fdfdfd;
-}
-
-body.dark {
-    --primary: #fcf6ba;
-    --bg: #0a0a0a;
-}
-
+:root { --primary: #004d4d; --gold: #D4AF37; --bg: #fdfdfd; }
+body.dark { --primary: #fcf6ba; --bg: #0a0a0a; }
 * { box-sizing: border-box; }
-
-body {
-    margin: 0;
-    font-family: 'Amiri', serif;
-    background: var(--bg);
-    color: var(--primary);
-}
-
+body { margin: 0; font-family: 'Amiri', serif; background: var(--bg); color: var(--primary); overflow: hidden; }
 .app-shell { display: flex; height: 100vh; }
-
-.side-menu {
-    width: 300px;
-    background: #003333;
-    color: white;
-    overflow-y: auto;
-}
-
-.gold-text { color: var(--gold); text-align: center; }
-
+.side-menu { width: 280px; background: #003333; color: white; overflow-y: auto; border-left: 2px solid var(--gold); }
+.gold-text { color: var(--gold); text-align: center; padding: 10px; }
 .surah-navigation { list-style: none; padding: 0; margin: 0; }
-
-.surah-navigation li {
-    padding: 15px 25px;
-    cursor: pointer;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-
-.surah-navigation li:hover { background: rgba(212,175,55,0.2); }
-
-.main-display { flex: 1; display: flex; flex-direction: column; }
-
-.top-nav {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 20px;
-    border-bottom: 1px solid #ddd;
-}
-
-.quran-container {
-    flex: 1;
-    overflow-y: auto;
-    padding: 40px;
-    text-align: center;
-    font-size: 32px;
-    line-height: 2.6;
-}
-
-.ayah { margin: 0 4px; }
-.ayah-num { color: var(--gold); font-size: 20px; }
-
-/* تصميم المشغل العصري المضاف */
-.modern-audio-player {
-    background: #002222;
-    padding: 15px 30px;
-    border-top: 3px solid var(--gold);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-.main-play-btn {
-    background: var(--gold);
-    border: none;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    color: #002222;
-    font-size: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.progress-container {
-    width: 100%;
-    max-width: 700px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    color: white;
-}
-
-.seek-slider {
-    flex: 1;
-    accent-color: var(--gold);
-    cursor: pointer;
-}
-
-body.dark .side-menu { background: #120022; }
-
+.surah-navigation li { padding: 15px 20px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.surah-navigation li:hover { background: rgba(212,175,55,0.15); color: var(--gold); }
+.main-display { flex: 1; display: flex; flex-direction: column; height: 100vh; }
+.top-nav { display: flex; justify-content: space-between; padding: 15px; background: #fff; border-bottom: 1px solid #eee; }
+.quran-container { flex: 1; overflow-y: auto; padding: 40px; text-align: center; font-size: 28px; line-height: 2.2; }
+.modern-audio-player { background: #002b2b; padding: 15px 30px; border-top: 3px solid var(--gold); display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.main-play-btn { background: var(--gold); border: none; width: 55px; height: 55px; border-radius: 50%; color: #002b2b; font-size: 22px; cursor: pointer; }
+.progress-container { width: 100%; max-width: 800px; display: flex; align-items: center; gap: 15px; color: #fff; }
+.seek-slider { flex: 1; accent-color: var(--gold); cursor: pointer; }
+body.dark .top-nav { background: #1a1a1a; border-bottom-color: #333; }
