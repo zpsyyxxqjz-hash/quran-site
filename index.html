@@ -14,9 +14,13 @@
     <aside class="side-menu">
         <div class="header-box">
             <h1>المصحف الشريف</h1>
+            <div class="search-wrapper">
+                <input type="text" id="surah-search" placeholder="ابحث عن سورة...">
+                <i class="fas fa-search"></i>
+            </div>
         </div>
         <ul id="surah-list" class="surah-navigation">
-            <li class="loading">جاري تحميل قائمة السور...</li>
+            <li class="loading">جاري تحميل السور...</li>
         </ul>
     </aside>
 
@@ -24,7 +28,7 @@
         <header class="top-bar">
             <div id="surah-title">اختر سورة مباركة</div>
             <div class="reciter-info">
-                <i class="fas fa-microphone"></i> بصوت الشيخ مشاري العفاسي
+                <i class="fas fa-microphone"></i> الشيخ مشاري العفاسي
             </div>
         </header>
 
@@ -45,7 +49,7 @@
                 <input type="range" id="seek-slider" class="custom-slider" value="0" max="100">
                 <span id="duration-time">0:00</span>
             </div>
-            <audio id="main-audio-player"></audio>
+            <audio id="main-audio-player" crossorigin="anonymous"></audio>
         </footer>
     </main>
 </div>
