@@ -4,58 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>المصحف الشريف</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <div class="app-shell">
-    <aside class="side-menu">
-        <div class="brand">
-            <h1 class="gold-text">المصحف الشريف</h1>
-        </div>
-        <ul id="surah-list" class="surah-navigation">
-            <li class="loading-msg">جاري تحميل قائمة السور...</li>
-        </ul>
-    </aside>
+  <aside class="side-menu">
+    <div class="brand">
+      <h1 class="gold-text">المصحف الشريف</h1>
+    </div>
+    <ul id="surah-list" class="surah-navigation">
+      <li>جاري التحميل...</li>
+    </ul>
+  </aside>
 
-    <main class="main-display">
-        <header class="top-nav">
-            <div id="last-read-status">مرحباً بك في المصحف الشريف</div>
-            <div class="actions">
-                <select id="reciter-select">
-                    <option value="muhammad_siddeeq_al-minshawi">الشيخ المنشاوي</option>
-                    <option value="mishari_rashid_al-afasy">الشيخ العفاسي</option>
-                    <option value="mahmood_khaleel_al-husaree">الشيخ الحصري</option>
-                    <option value="sa3ood_ash-shuraym">الشيخ الشريم</option>
-                    <option value="abu_bakr_ash-shaatree">الشيخ الشاطري</option>
-                </select>
-                <button id="theme-toggle" title="تبديل الوضع">🌙</button>
-            </div>
-        </header>
+  <main class="main-display">
+    <header class="top-nav">
+      <span id="last-read-status">اختر سورة للبدء</span>
+      <div class="actions">
+        <select id="reciter-select">
+          <option value="ar.minshawi">محمد صديق المنشاوي</option>
+          <option value="ar.alafasy">مشاري العفاسي</option>
+          <option value="ar.husary">محمود خليل الحصري</option>
+          <option value="ar.shaatree">أبو بكر الشاطري</option>
+          <option value="ar.saoodshuraym">سعود الشريم</option>
+        </select>
+        <button id="theme-toggle">🌙</button>
+      </div>
+    </header>
 
-        <section id="quran-text-area" class="quran-container">
-            <div class="welcome-screen">
-                <h2 class="bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</h2>
-                <p>الرجاء اختيار سورة من القائمة الجانبية للبدء</p>
-            </div>
-        </section>
+    <section id="quran-text-area" class="quran-container">
+      <h2 class="bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</h2>
+      <p>اختر سورة من القائمة</p>
+    </section>
 
-        <footer class="modern-audio-player">
-            <div class="player-controls">
-                <button id="play-pause-btn" class="main-play-btn">
-                    <i class="fas fa-play"></i>
-                </button>
-            </div>
-            <div class="progress-bar-wrapper">
-                <span id="current-time">0:00</span>
-                <input type="range" id="seek-slider" class="seek-slider" value="0" max="100">
-                <span id="duration-time">0:00</span>
-            </div>
-            <audio id="audio-player"></audio>
-        </footer>
-    </main>
+    <footer class="audio-panel">
+      <audio id="audio-player" controls></audio>
+    </footer>
+  </main>
 </div>
 
 <script src="app.js"></script>
