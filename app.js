@@ -1,81 +1,80 @@
-const surahListContainer = document.getElementById('surah-list');
+ const surahListContainer = document.getElementById('surah-list');
 const quranDisplayArea = document.getElementById('quran-display');
 const audioObj = document.getElementById('main-audio-player');
 const playPauseBtn = document.getElementById('play-pause');
 const seekSlider = document.getElementById('seek-slider');
+const searchInput = document.getElementById('surah-search');
 
-// 1. جلب قائمة السور عند التشغيل
-async function startApp() {
+let allSurahs = [];
+
+async function initApp() {
     try {
         const response = await fetch('https://api.alquran.cloud/v1/surah');
         const data = await response.json();
-        surahListContainer.innerHTML = '';
-        
-        data.data.forEach(surah => {
-            const li = document.createElement('li');
-            li.innerHTML = `<span>${surah.number}. ${surah.name}</span>`;
-            li.onclick = () => getSurahData(surah.number, surah.name);
-            surahListContainer.appendChild(li);
-        });
+        allSurahs = data.data;
+        displaySurahs(allSurahs);
     } catch (error) {
-        surahListContainer.innerHTML = '<li style="color:var(--gold)">عذراً، فشل تحميل القائمة</li>';
+        surahListContainer.innerHTML = '<li>فشل في الاتصال</li>';
     }
 }
 
-// 2. تحميل نص السورة وتشغيل صوت العفاسي
-async function getSurahData(id, name) {
+function displaySurahs(surahs) {
+    surahListContainer.innerHTML = '';
+    surahs.forEach(surah => {
+        const li = document.createElement('li');
+        li.innerHTML = `<span>${surah.number}. ${surah.name}</span>`;
+        li.onclick = () => loadSurahContent(surah.number, surah.name);
+        surahListContainer.appendChild(li);
+    });
+}
+
+searchInput.oninput = (e) => {
+    const term = e.target.value;
+    const filtered = allSurahs.filter(s => s.name.includes(term) || s.number.toString().includes(term));
+    displaySurahs(filtered);
+};
+
+async function loadSurahContent(id, name) {
     document.getElementById('surah-title').innerText = "سورة " + name;
-    quranDisplayArea.innerHTML = '<p style="color:var(--gold); font-size: 1.5rem;">جاري التحميل...</p>';
+    quranDisplayArea.innerHTML = '<p style="color:#D4AF37">جاري تحميل الآيات...</p>';
     
     try {
-        // جلب النص
         const resText = await fetch(`https://api.alquran.cloud/v1/surah/${id}/ar.uthmani`);
         const textData = await resText.json();
         
         quranDisplayArea.innerHTML = '';
         textData.data.ayahs.forEach(ayah => {
-            quranDisplayArea.innerHTML += `<span>${ayah.text} <b style="color:var(--gold)">﴿${ayah.numberInSurah}﴾</b> </span>`;
+            quranDisplayArea.innerHTML += `<span>${ayah.text} <span class="ayah-num">${ayah.numberInSurah}</span></span> `;
         });
         
-        // جلب وتفعيل صوت العفاسي
+        // تشغيل الصوت من سيرفر قوي جداً (العفاسي)
         const formattedId = id.toString().padStart(3, '0');
-        audioObj.src = `https://download.quranicaudio.com/quran/mishari_rashid_al-afasy/${formattedId}.mp3`;
+        audioObj.src = `https://server8.mp3quran.net/afs/${formattedId}.mp3`;
         audioObj.play();
         playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        
     } catch (err) {
-        quranDisplayArea.innerHTML = 'حدث خطأ أثناء تحميل السورة.';
+        quranDisplayArea.innerHTML = 'حدث خطأ في تحميل السورة.';
     }
 }
 
-// 3. أزرار التحكم والوقت
 playPauseBtn.onclick = () => {
-    if (audioObj.paused) {
-        audioObj.play();
-        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-    } else {
-        audioObj.pause();
-        playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-    }
+    if (audioObj.paused) { audioObj.play(); playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; }
+    else { audioObj.pause(); playBtn.innerHTML = '<i class="fas fa-play"></i>'; }
 };
 
 audioObj.ontimeupdate = () => {
-    const progress = (audioObj.currentTime / audioObj.duration) * 100 || 0;
-    seekSlider.value = progress;
-    document.getElementById('current-time').innerText = formatTimeDisplay(audioObj.currentTime);
-    document.getElementById('duration-time').innerText = formatTimeDisplay(audioObj.duration);
+    seekSlider.value = (audioObj.currentTime / audioObj.duration) * 100 || 0;
+    document.getElementById('current-time').innerText = formatTime(audioObj.currentTime);
+    document.getElementById('duration-time').innerText = formatTime(audioObj.duration);
 };
 
-seekSlider.oninput = () => {
-    audioObj.currentTime = (seekSlider.value / 100) * audioObj.duration;
-};
+seekSlider.oninput = () => { audioObj.currentTime = (seekSlider.value / 100) * audioObj.duration; };
 
-function formatTimeDisplay(seconds) {
-    if (!seconds) return "0:00";
-    let m = Math.floor(seconds / 60);
-    let s = Math.floor(seconds % 60);
-    return `${m}:${s < 10 ? '0' + s : s}`;
+function formatTime(s) {
+    if (!s) return "0:00";
+    let m = Math.floor(s/60); let sec = Math.floor(s%60);
+    return `${m}:${sec < 10 ? '0'+sec : sec}`;
 }
 
-// بدء التطبيق
-startApp();
+initApp();
+
