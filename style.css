@@ -15,4 +15,5 @@ body { margin: 0; font-family: 'Amiri', serif; background: var(--bg); color: var
 .main-play-btn { background: var(--gold); border: none; width: 55px; height: 55px; border-radius: 50%; color: #002b2b; font-size: 22px; cursor: pointer; }
 .progress-container { width: 100%; max-width: 800px; display: flex; align-items: center; gap: 15px; color: #fff; }
 .seek-slider { flex: 1; accent-color: var(--gold); cursor: pointer; }
-body.dark .top-nav { background: #1a1a1a; border-bottom-color: #333; }
+body.dark .top-nav, body.dark .side-menu { background: #1a1a1a; }
+
