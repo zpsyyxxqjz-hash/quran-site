@@ -9,10 +9,12 @@ const seekSlider = document.getElementById('seek-slider');
 const currentTimeSpan = document.getElementById('current-time');
 const durationTimeSpan = document.getElementById('duration-time');
 
+// تحميل قائمة السور
 async function loadSurahList() {
     try {
         const res = await fetch('https://api.alquran.cloud/v1/surah');
-        const { data } = await res.json();
+        const json = await res.json();
+        const data = json.data;
         surahList.innerHTML = '';
         data.forEach(s => {
             const li = document.createElement('li');
@@ -20,21 +22,25 @@ async function loadSurahList() {
             li.onclick = () => loadSurah(s.number, s.name);
             surahList.appendChild(li);
         });
-    } catch {
-        surahList.innerHTML = '<li>فشل تحميل السور</li>';
+    } catch (e) {
+        surahList.innerHTML = '<li>فشل تحميل السور. تأكد من الإنترنت</li>';
     }
 }
 
+// تحميل وعرض السورة
 async function loadSurah(id, name) {
     quranArea.innerHTML = `<p>جاري تحميل سورة ${name}...</p>`;
     lastRead.textContent = `آخر ما قرأت: ${name}`;
     try {
         const res = await fetch(`https://api.alquran.cloud/v1/surah/${id}/ar.uthmani`);
-        const { data } = await res.json();
+        const json = await res.json();
+        const surah = json.data;
+        
         quranArea.innerHTML = `<h1>${name}</h1>`;
-        data.ayahs.forEach(a => {
+        surah.ayahs.forEach(a => {
             quranArea.innerHTML += `<span class="ayah">${a.text} <span class="ayah-num">﴿${a.numberInSurah}﴾</span></span>`;
         });
+        
         playAudio(id);
         localStorage.setItem('lastSurah', JSON.stringify({ id, name }));
     } catch {
@@ -49,6 +55,7 @@ function playAudio(surahId) {
     playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
 }
 
+// التحكم في المشغل
 playPauseBtn.onclick = () => {
     if (audioPlayer.paused) {
         audioPlayer.play();
@@ -79,9 +86,4 @@ function formatTime(sec) {
 
 themeToggle.onclick = () => document.body.classList.toggle('dark');
 
-window.onload = () => {
-    loadSurahList();
-    const saved = JSON.parse(localStorage.getItem('lastSurah'));
-    if (saved) lastRead.textContent = `آخر ما قرأت: ${saved.name}`;
-};
-
+window.onload = loadSurahList;
