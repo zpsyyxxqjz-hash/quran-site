@@ -1,47 +1,67 @@
 body {
     margin: 0;
     font-family: 'Amiri', serif;
+    background: #fdfdfd;
+}
+
+.app {
     display: flex;
     height: 100vh;
 }
 
-.side-menu {
-    width: 280px;
+.side {
+    width: 260px;
     background: #003333;
     color: white;
     overflow-y: auto;
 }
 
-.gold-text {
-    color: #D4AF37;
+.side h1 {
     text-align: center;
+    padding: 20px;
+    color: #D4AF37;
 }
 
-.surah-navigation {
+.side li {
     list-style: none;
-    padding: 0;
-}
-
-.surah-navigation li {
-    padding: 15px;
+    padding: 14px;
     cursor: pointer;
 }
 
-.main-display {
+.side li:hover {
+    background: rgba(212,175,55,0.2);
+}
+
+main {
     flex: 1;
     display: flex;
     flex-direction: column;
 }
 
-.quran-container {
+header {
+    padding: 10px 20px;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+}
+
+#quran {
     flex: 1;
     overflow-y: auto;
     padding: 30px;
-    text-align: center;
     font-size: 26px;
+    text-align: center;
+    line-height: 2.4;
 }
 
-.audio-panel {
+footer {
     border-top: 2px solid #D4AF37;
     padding: 10px;
+    text-align: center;
+}
+
+button {
+    font-size: 22px;
+    padding: 10px 20px;
+    cursor: pointer;
 }
