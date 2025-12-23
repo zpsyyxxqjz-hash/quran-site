@@ -2,105 +2,41 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>المصحف الشريف</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
-    <style>
-        :root { --primary: #004d4d; --gold: #D4AF37; --bg: #ffffff; }
-        body { margin: 0; font-family: 'Amiri', serif; background: var(--bg); color: #003333; overflow: hidden; height: 100vh; display: flex; }
-        .side-menu { width: 280px; background: #003333; color: white; overflow-y: auto; border-left: 3px solid var(--gold); }
-        .gold-text { color: var(--gold); text-align: center; padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .surah-navigation { list-style: none; padding: 0; }
-        .surah-navigation li { padding: 15px 20px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .surah-navigation li:hover { background: rgba(212, 175, 55, 0.2); color: var(--gold); }
-        .main-display { flex: 1; display: flex; flex-direction: column; }
-        .top-nav { display: flex; justify-content: space-between; padding: 15px 25px; border-bottom: 1px solid #eee; align-items: center; }
-        .quran-container { flex: 1; overflow-y: auto; padding: 40px; text-align: center; font-size: 28px; line-height: 2.2; }
-        .modern-audio-player { background: #002626; padding: 15px; border-top: 4px solid var(--gold); display: flex; flex-direction: column; align-items: center; }
-        .main-play-btn { width: 55px; height: 55px; border-radius: 50%; border: none; background: var(--gold); color: #002626; font-size: 22px; cursor: pointer; margin-bottom: 10px; }
-        .progress-bar-wrapper { width: 90%; max-width: 600px; display: flex; align-items: center; gap: 10px; color: white; }
-        .seek-slider { flex: 1; accent-color: var(--gold); cursor: pointer; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
 <aside class="side-menu">
     <h1 class="gold-text">المصحف الشريف</h1>
-    <ul id="surah-list" class="surah-navigation"><li>جاري تحميل السور...</li></ul>
+    <ul id="surah-list" class="surah-navigation">
+        <li>جاري التحميل...</li>
+    </ul>
 </aside>
+
 <main class="main-display">
     <header class="top-nav">
         <div id="status">اختر سورة للبدء</div>
         <select id="reciter">
-            <option value="muhammad_siddeeq_al-minshawi">الشيخ المنشاوي</option>
-            <option value="mishari_rashid_al-afasy">الشيخ العفاسي</option>
-            <option value="mahmood_khaleel_al-husaree">الشيخ الحصري</option>
-            <option value="sa3ood_ash-shuraym">الشيخ الشريم</option>
+            <option value="muhammad_siddeeq_al-minshawi">المنشاوي</option>
+            <option value="mishari_rashid_al-afasy">العفاسي</option>
+            <option value="mahmood_khaleel_al-husaree">الحصري</option>
+            <option value="sa3ood_ash-shuraym">الشريم</option>
         </select>
     </header>
+
     <section id="quran-text" class="quran-container">
         <h2>بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</h2>
     </section>
-    <footer class="modern-audio-player">
-        <button id="play-btn" class="main-play-btn"><i class="fas fa-play"></i></button>
-        <div class="progress-bar-wrapper">
-            <span id="time">0:00</span>
-            <input type="range" id="seek" class="seek-slider" value="0">
-            <span id="total">0:00</span>
-        </div>
-        <audio id="player"></audio>
+
+    <footer class="audio-panel">
+        <audio id="player" controls></audio>
     </footer>
 </main>
-<script>
-    const surahList = document.getElementById('surah-list');
-    const quranText = document.getElementById('quran-text');
-    const player = document.getElementById('player');
-    const playBtn = document.getElementById('play-btn');
 
-    async function init() {
-        try {
-            const res = await fetch('https://api.alquran.cloud/v1/surah');
-            const data = await res.json();
-            surahList.innerHTML = '';
-            data.data.forEach(s => {
-                const li = document.createElement('li');
-                li.innerHTML = `<span>${s.number}.</span> ${s.name}`;
-                li.onclick = () => loadSurah(s.number, s.name);
-                surahList.appendChild(li);
-            });
-        } catch { surahList.innerHTML = '<li style="color:red">فشل الاتصال بالمصادر</li>'; }
-    }
-
-    async function loadSurah(id, name) {
-        quranText.innerHTML = `جاري تحميل ${name}...`;
-        const res = await fetch(`https://api.alquran.cloud/v1/surah/${id}/ar.uthmani`);
-        const data = await res.json();
-        quranText.innerHTML = `<h1 style="color:var(--gold)">${name}</h1>`;
-        data.data.ayahs.forEach(a => {
-            quranText.innerHTML += `${a.text} <span style="color:var(--gold)">﴿${a.numberInSurah}﴾</span> `;
-        });
-        playSurah(id);
-        document.getElementById('status').innerText = `أنت تستمع الآن: سورة ${name}`;
-    }
-
-    function playSurah(id) {
-        const reciter = document.getElementById('reciter').value;
-        player.src = `https://download.quranicaudio.com/quran/${reciter}/${id.toString().padStart(3, '0')}.mp3`;
-        player.play();
-        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-    }
-
-    playBtn.onclick = () => {
-        if (player.paused) { player.play(); playBtn.innerHTML = '<i class="fas fa-pause"></i>'; }
-        else { player.pause(); playBtn.innerHTML = '<i class="fas fa-play"></i>'; }
-    };
-
-    player.ontimeupdate = () => {
-        document.getElementById('seek').value = (player.currentTime / player.duration) * 100 || 0;
-        document.getElementById('time').innerText = Math.floor(player.currentTime/60) + ":" + ("0"+Math.floor(player.currentTime%60)).slice(-2);
-    };
-
-    window.onload = init;
-</script>
+<script src="app.js"></script>
 </body>
 </html>
