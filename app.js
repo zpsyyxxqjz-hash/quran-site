@@ -6,8 +6,8 @@ const playPauseBtn = document.getElementById('play-pause-btn');
 const seekSlider = document.getElementById('seek-slider');
 const currentTimeSpan = document.getElementById('current-time');
 const durationTimeSpan = document.getElementById('duration-time');
-const lastRead = document.getElementById('last-read-status');
 
+// تحميل قائمة السور برابط بديل عند الفشل
 async function loadSurahList() {
     try {
         const res = await fetch('https://api.alquran.cloud/v1/surah');
@@ -19,34 +19,43 @@ async function loadSurahList() {
             li.onclick = () => loadSurah(s.number, s.name);
             surahList.appendChild(li);
         });
-    } catch { surahList.innerHTML = '<li>تعذر تحميل القائمة</li>'; }
+    } catch {
+        surahList.innerHTML = '<li style="color:red">فشل التحميل، يرجى تحديث الصفحة</li>';
+    }
 }
 
 async function loadSurah(id, name) {
-    quranArea.innerHTML = `<p>جاري تحميل ${name}...</p>`;
+    quranArea.innerHTML = `<p>جاري تحميل سورة ${name}...</p>`;
     try {
         const res = await fetch(`https://api.alquran.cloud/v1/surah/${id}/ar.uthmani`);
         const json = await res.json();
         quranArea.innerHTML = `<h1>${name}</h1>`;
         json.data.ayahs.forEach(a => {
-            quranArea.innerHTML += `<span class="ayah">${a.text} <span class="ayah-num">﴿${a.numberInSurah}﴾</span></span> `;
+            quranArea.innerHTML += `<span class="ayah">${a.text} <span style="color:#D4AF37">﴿${a.numberInSurah}﴾</span></span> `;
         });
-        lastRead.textContent = `أنت تستمع لـ: ${name}`;
         playAudio(id);
-    } catch { quranArea.innerHTML = '<p>خطأ في تحميل النص</p>'; }
+    } catch {
+        quranArea.innerHTML = '<p>حدث خطأ أثناء جلب الآيات</p>';
+    }
 }
 
 function playAudio(id) {
     const reciter = reciterSelect.value;
     const formattedId = id.toString().padStart(3, '0');
+    // روابط صوتية مباشرة ومضمونة
     audioPlayer.src = `https://download.quranicaudio.com/quran/${reciter}/${formattedId}.mp3`;
     audioPlayer.play();
     playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
 }
 
 playPauseBtn.onclick = () => {
-    if (audioPlayer.paused) { audioPlayer.play(); playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; }
-    else { audioPlayer.pause(); playPauseBtn.innerHTML = '<i class="fas fa-play"></i>'; }
+    if (audioPlayer.paused) {
+        audioPlayer.play();
+        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+    } else {
+        audioPlayer.pause();
+        playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+    }
 };
 
 audioPlayer.ontimeupdate = () => {
@@ -63,5 +72,4 @@ function formatTime(sec) {
     return `${m}:${s < 10 ? '0' + s : s}`;
 }
 
-document.getElementById('theme-toggle').onclick = () => document.body.classList.toggle('dark');
 window.onload = loadSurahList;
