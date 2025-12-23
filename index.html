@@ -1,49 +1,56 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>المصحف الشريف</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المصحف الشريف - الشيخ مشاري العفاسي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Reem+Kufi:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<div class="app">
-
-    <aside class="sidebar">
-        <h1>📖 المصحف الشريف</h1>
-        <ul id="surah-list">جاري التحميل...</ul>
+<div class="app-container">
+    <aside class="side-menu">
+        <div class="header-box">
+            <h1>المصحف الشريف</h1>
+        </div>
+        <ul id="surah-list" class="surah-navigation">
+            <li class="loading">جاري تحميل قائمة السور...</li>
+        </ul>
     </aside>
 
-    <main class="content">
-        <header>
-            <span id="status">اختر سورة</span>
-            <select id="reciter">
-                <option value="ar.minshawi">المنشاوي</option>
-                <option value="ar.alafasy">العفاسي</option>
-                <option value="ar.husary">الحصري</option>
-                <option value="ar.shaatree">الشاطري</option>
-                <option value="ar.saoodshuraym">الشريم</option>
-            </select>
+    <main class="main-content">
+        <header class="top-bar">
+            <div id="surah-title">اختر سورة مباركة</div>
+            <div class="reciter-info">
+                <i class="fas fa-microphone"></i> بصوت الشيخ مشاري العفاسي
+            </div>
         </header>
 
-        <section id="quran"></section>
+        <section id="quran-display" class="quran-text-area">
+            <div class="welcome-screen">
+                <i class="fas fa-quran fa-4x gold-icon"></i>
+                <p>طابت أوقاتكم بذكر الله</p>
+                <span>الرجاء اختيار سورة من القائمة للبدء</span>
+            </div>
+        </section>
 
-        <!-- مشغل عصري -->
-        <div class="player">
-            <button id="play">▶</button>
-            <input type="range" id="seek" value="0">
-            <span id="time">0:00</span>
-            <audio id="audio"></audio>
-        </div>
-
+        <footer class="audio-player-bar">
+            <button id="play-pause" class="main-control-btn">
+                <i class="fas fa-play"></i>
+            </button>
+            <div class="progress-section">
+                <span id="current-time">0:00</span>
+                <input type="range" id="seek-slider" class="custom-slider" value="0" max="100">
+                <span id="duration-time">0:00</span>
+            </div>
+            <audio id="main-audio-player"></audio>
+        </footer>
     </main>
 </div>
 
 <script src="app.js"></script>
 </body>
 </html>
+
