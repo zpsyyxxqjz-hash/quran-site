@@ -1,32 +1,66 @@
-const surahList = document.getElementById('surah-list');
-const quranText = document.getElementById('quran-text');
-const player = document.getElementById('player');
+const surahList = document.getElementById("surah-list");
+const quran = document.getElementById("quran");
+const audio = document.getElementById("audio");
+const playBtn = document.getElementById("play");
+const reciter = document.getElementById("reciter");
+const status = document.getElementById("status");
 
-async function init() {
-    const res = await fetch('https://api.alquran.cloud/v1/surah');
-    const data = await res.json();
+let currentSurah = null;
 
-    surahList.innerHTML = '';
-    data.data.forEach(s => {
-        const li = document.createElement('li');
+/* تحميل السور */
+fetch("https://api.alquran.cloud/v1/surah")
+.then(res => res.json())
+.then(json => {
+    surahList.innerHTML = "";
+    json.data.forEach(s => {
+        const li = document.createElement("li");
         li.textContent = `${s.number}. ${s.name}`;
         li.onclick = () => loadSurah(s.number, s.name);
         surahList.appendChild(li);
     });
-}
+});
 
+/* تحميل سورة */
 async function loadSurah(id, name) {
-    quranText.innerHTML = `جاري تحميل ${name}...`;
+    status.textContent = `سورة ${name}`;
+    quran.innerHTML = "جاري التحميل...";
 
-    const res = await fetch(`https://api.alquran.cloud/v1/surah/${id}/ar.uthmani`);
+    const res = await fetch("https://api.alquran.cloud/v1/quran/ar.uthmani");
     const data = await res.json();
+    const surah = data.data.surahs.find(s => s.number === id);
 
-    quranText.innerHTML = `<h1>${name}</h1>`;
-    data.data.ayahs.forEach(a => {
-        quranText.innerHTML += `${a.text} ﴿${a.numberInSurah}﴾ `;
+    quran.innerHTML = `<h2>${name}</h2>`;
+    surah.ayahs.forEach(a => {
+        quran.innerHTML += `${a.text} <span style="color:#D4AF37">﴿${a.numberInSurah}﴾</span> `;
     });
 
-    player.src = `https://cdn.islamic.network/quran/audio-surah/128/ar.minshawi/${id}.mp3`;
+    currentSurah = id;
+    loadAudio();
 }
 
-window.onload = init;
+/* تحميل الصوت */
+function loadAudio() {
+    if (!currentSurah) return;
+
+    const reader = reciter.value;
+    audio.src = `https://cdn.islamic.network/quran/audio-surah/128/${reader}/${currentSurah}.mp3`;
+    audio.load();
+}
+
+/* زر تشغيل */
+playBtn.onclick = () => {
+    if (audio.paused) {
+        audio.play();
+        playBtn.textContent = "⏸";
+    } else {
+        audio.pause();
+        playBtn.textContent = "▶";
+    }
+};
+
+/* تغيير القارئ */
+reciter.onchange = () => {
+    loadAudio();
+    audio.play();
+    playBtn.textContent = "⏸";
+};
