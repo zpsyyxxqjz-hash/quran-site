@@ -1,41 +1,44 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>المصحف الشريف</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المصحف الشريف</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<aside class="side-menu">
-    <h1 class="gold-text">المصحف الشريف</h1>
-    <ul id="surah-list" class="surah-navigation">
-        <li>جاري التحميل...</li>
-    </ul>
+<div class="app">
+
+<aside class="side">
+<h1>المصحف الشريف</h1>
+<ul id="surah-list">جاري التحميل...</ul>
 </aside>
 
-<main class="main-display">
-    <header class="top-nav">
-        <div id="status">اختر سورة للبدء</div>
-        <select id="reciter">
-            <option value="muhammad_siddeeq_al-minshawi">المنشاوي</option>
-            <option value="mishari_rashid_al-afasy">العفاسي</option>
-            <option value="mahmood_khaleel_al-husaree">الحصري</option>
-            <option value="sa3ood_ash-shuraym">الشريم</option>
-        </select>
-    </header>
+<main>
+<header>
+<span id="status">اختر سورة</span>
+<select id="reciter">
+<option value="ar.minshawi">المنشاوي</option>
+<option value="ar.alafasy">العفاسي</option>
+<option value="ar.husary">الحصري</option>
+<option value="ar.shaatree">الشاطري</option>
+<option value="ar.saoodshuraym">الشريم</option>
+</select>
+</header>
 
-    <section id="quran-text" class="quran-container">
-        <h2>بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</h2>
-    </section>
+<section id="quran"></section>
 
-    <footer class="audio-panel">
-        <audio id="player" controls></audio>
-    </footer>
+<footer>
+<button id="play">▶</button>
+<audio id="audio"></audio>
+</footer>
 </main>
+
+</div>
 
 <script src="app.js"></script>
 </body>
