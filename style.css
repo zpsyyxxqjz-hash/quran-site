@@ -1,1 +1,47 @@
+body {
+    margin: 0;
+    font-family: 'Amiri', serif;
+    display: flex;
+    height: 100vh;
+}
 
+.side-menu {
+    width: 280px;
+    background: #003333;
+    color: white;
+    overflow-y: auto;
+}
+
+.gold-text {
+    color: #D4AF37;
+    text-align: center;
+}
+
+.surah-navigation {
+    list-style: none;
+    padding: 0;
+}
+
+.surah-navigation li {
+    padding: 15px;
+    cursor: pointer;
+}
+
+.main-display {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.quran-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 30px;
+    text-align: center;
+    font-size: 26px;
+}
+
+.audio-panel {
+    border-top: 2px solid #D4AF37;
+    padding: 10px;
+}
