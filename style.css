@@ -1,142 +1,191 @@
 :root {
-    --midnight: #02060f;
-    --deep-blue: #050b16;
-    --matte-gold: #c5a059; /* ذهبي مطفي فخم */
-    --gold-glow: rgba(197, 160, 89, 0.2);
-    --text-white: #f8f9fa;
-    --text-gray: #a0a4a8;
+  --midnight: #02060f;
+  --deep-blue: #050b16;
+  --matte-gold: #c5a059;
+  --gold-soft: rgba(197,160,89,0.15);
+  --text-white: #f8f9fa;
+  --text-gray: #9ca3af;
 }
 
 body {
-    margin: 0;
-    font-family: 'Amiri', serif;
-    background-color: var(--midnight);
-    /* تدرج كوني عميق */
-    background-image: 
-        radial-gradient(circle at top, var(--deep-blue), var(--midnight)),
-        url('https://www.transparenttextures.com/patterns/stardust.png');
-    color: var(--text-white);
-    height: 100vh;
-    overflow: hidden;
-    direction: rtl;
+  margin: 0;
+  font-family: 'Amiri', serif;
+  background: radial-gradient(circle at top, var(--deep-blue), var(--midnight));
+  color: var(--text-white);
+  height: 100vh;
+  overflow: hidden;
+  direction: rtl;
 }
 
-/* نمط هندسي خفي في الخلفية */
 body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background-image: url('https://www.transparenttextures.com/patterns/islamic-art.png');
-    opacity: 0.05;
-    z-index: -1;
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url('https://www.transparenttextures.com/patterns/islamic-art.png');
+  opacity: 0.03;
+  pointer-events: none;
 }
 
 .app-container {
-    display: flex;
-    height: 100vh;
-    padding: 30px;
-    gap: 40px;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  height: 100vh;
+  padding: 30px;
+  gap: 40px;
+  justify-content: center;
+  align-items: center;
 }
 
-/* القائمة الجانبية */
+/* القائمة */
 .side-panel {
-    width: 320px;
-    height: 85vh;
-    background: rgba(5, 11, 22, 0.7);
-    border: 1px solid rgba(197, 160, 89, 0.3);
-    border-radius: 30px;
-    backdrop-filter: blur(20px);
-    display: flex;
-    flex-direction: column;
+  width: 320px;
+  height: 85vh;
+  background: rgba(5,11,22,0.6);
+  border-radius: 30px;
+  box-shadow:
+    0 20px 50px rgba(0,0,0,0.7),
+    inset 0 0 0 1px var(--gold-soft);
+  display: flex;
+  flex-direction: column;
 }
 
-.sidebar-top { display: flex; align-items: center; gap: 15px; padding: 25px; }
-.gold-icon { color: var(--matte-gold); font-size: 1.2rem; }
+.sidebar-top {
+  padding: 25px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.gold-icon { color: var(--matte-gold); }
 .matte-gold-text { color: var(--matte-gold); margin: 0; }
 
-.search-container { padding: 0 25px 20px; position: relative; }
+.search-container { padding: 0 25px 20px; }
+
 #surah-search {
-    width: 100%;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(197, 160, 89, 0.4);
-    border-radius: 12px;
-    padding: 12px 15px;
-    color: white;
-    outline: none;
+  width: 100%;
+  padding: 12px 15px;
+  background: rgba(255,255,255,0.04);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  outline: none;
 }
 
-.surah-menu { flex: 1; overflow-y: auto; list-style: none; padding: 10px; }
+.surah-menu {
+  list-style: none;
+  padding: 10px;
+  margin: 0;
+  overflow-y: auto;
+}
+
 .surah-menu li {
-    padding: 15px 20px;
-    margin-bottom: 5px;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: 0.3s;
-    background: rgba(255,255,255,0.02);
+  padding: 14px 20px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: 0.3s;
 }
-.surah-menu li:hover { background: var(--gold-glow); color: var(--matte-gold); }
 
-/* البطاقة المركزية (جسم الهاتف) */
+.surah-menu li:hover {
+  background: rgba(197,160,89,0.1);
+  color: var(--matte-gold);
+}
+
+/* المحتوى */
 .main-content {
-    flex: 1;
-    max-width: 800px;
-    height: 85vh;
-    background: var(--deep-blue);
-    border: 1.5px solid var(--matte-gold);
-    border-radius: 50px;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    box-shadow: 0 0 60px rgba(0,0,0,0.8);
+  flex: 1;
+  max-width: 820px;
+  height: 85vh;
+  background: linear-gradient(180deg, #050b16, #02060f);
+  border-radius: 45px;
+  display: flex;
+  flex-direction: column;
+  box-shadow:
+    0 25px 60px rgba(0,0,0,0.85),
+    inset 0 0 0 1px var(--gold-soft);
 }
 
-.top-logo-area { text-align: center; padding-top: 30px; }
+.top-logo-area { padding-top: 30px; text-align: center; }
+
 .islamic-star {
-    width: 70px; height: 70px;
-    background: var(--midnight);
-    margin: 0 auto;
-    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-    border: 1.5px solid var(--matte-gold);
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 0 20px var(--gold-glow);
+  width: 70px;
+  height: 70px;
+  margin: auto;
+  border-radius: 50%;
+  border: 1px solid var(--matte-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 25px rgba(197,160,89,0.3);
 }
-.kaaba-icon { font-size: 25px; filter: drop-shadow(0 0 5px var(--matte-gold)); }
 
-.display-screen { flex: 1; overflow-y: auto; padding: 40px; text-align: center; }
-.matte-gold-title { color: var(--matte-gold); font-family: 'Reem Kufi', sans-serif; font-size: 2.5rem; margin-bottom: 10px; }
-.sub-text-light { color: var(--text-gray); font-size: 1.2rem; }
+.kaaba-icon { color: var(--matte-gold); font-size: 26px; }
 
-.quran-text-flow { font-size: 2.4rem; line-height: 2.8; }
+.display-screen {
+  flex: 1;
+  overflow-y: auto;
+  padding: 40px;
+  text-align: center;
+}
+
+.matte-gold-title {
+  font-family: 'Reem Kufi', sans-serif;
+  font-size: 2.5rem;
+}
+
+.sub-text-light { color: var(--text-gray); }
+
+.quran-text-flow {
+  font-size: 2.2rem;
+  line-height: 3.2;
+  letter-spacing: 0.5px;
+}
+
 .ayah-num {
-    color: var(--matte-gold);
-    display: inline-flex;
-    width: 40px; height: 40px;
-    border: 1px solid var(--matte-gold);
-    align-items: center; justify-content: center;
-    font-size: 1.1rem; margin: 0 10px;
-    transform: rotate(45deg);
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--matte-gold);
+  align-items: center;
+  justify-content: center;
+  color: var(--matte-gold);
+  font-size: 0.95rem;
+  margin: 0 8px;
+  background: rgba(197,160,89,0.05);
 }
-.ayah-num b { transform: rotate(-45deg); }
 
-/* المشغل السفلي */
+/* المشغل */
 .player-panel {
-    background: rgba(2, 6, 15, 0.95);
-    padding: 20px 50px;
-    border-top: 1px solid rgba(197, 160, 89, 0.3);
-    border-bottom-left-radius: 50px;
-    border-bottom-right-radius: 50px;
-    display: flex; align-items: center; gap: 30px;
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  background: rgba(2,6,15,0.95);
+  border-top: 1px solid var(--gold-soft);
+  border-radius: 0 0 45px 45px;
 }
 
 .main-play-btn {
-    background: var(--matte-gold);
-    color: var(--midnight);
-    border: none; width: 60px; height: 60px;
-    border-radius: 50%; cursor: pointer; font-size: 22px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  background: radial-gradient(circle at top, #e6c97a, var(--matte-gold));
+  color: #000;
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 15px 40px rgba(197,160,89,0.5);
+  transition: transform 0.2s;
 }
 
-.track-info { flex: 1; display: flex; flex-direction: column; gap: 10px; }
-.gold-slider { accent-color: var(--matte-gold); height: 4px; cursor: pointer; }
-.time-row { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-gray); }
+.main-play-btn:hover { transform: scale(1.05); }
+
+.track-info { flex: 1; }
+
+.gold-slider { width: 100%; accent-color: var(--matte-gold); }
+
+.time-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--text-gray);
+}
