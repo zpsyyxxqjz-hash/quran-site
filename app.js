@@ -1,80 +1,31 @@
- const surahListContainer = document.getElementById('surah-list');
-const quranDisplayArea = document.getElementById('quran-display');
-const audioObj = document.getElementById('main-audio-player');
-const playPauseBtn = document.getElementById('play-pause');
-const seekSlider = document.getElementById('seek-slider');
-const searchInput = document.getElementById('surah-search');
+/* الألوان الأساسية للثيمات */
+.theme-royal { --bg: #0a111a; --panel: #111a27; --accent: #D4AF37; --text: #e0e0e0; }
+.theme-cosmic { --bg: #050510; --panel: rgba(20, 20, 50, 0.7); --accent: #00d4ff; --text: #ffffff; }
+.theme-classic { --bg: #f4f1ea; --panel: #ffffff; --accent: #2d5a27; --text: #333333; }
 
-let allSurahs = [];
-
-async function initApp() {
-    try {
-        const response = await fetch('https://api.alquran.cloud/v1/surah');
-        const data = await response.json();
-        allSurahs = data.data;
-        displaySurahs(allSurahs);
-    } catch (error) {
-        surahListContainer.innerHTML = '<li>فشل في الاتصال</li>';
-    }
+body {
+    margin: 0; font-family: 'Amiri', serif;
+    background-color: var(--bg); color: var(--text);
+    transition: all 0.5s ease; height: 100vh; overflow: hidden;
 }
 
-function displaySurahs(surahs) {
-    surahListContainer.innerHTML = '';
-    surahs.forEach(surah => {
-        const li = document.createElement('li');
-        li.innerHTML = `<span>${surah.number}. ${surah.name}</span>`;
-        li.onclick = () => loadSurahContent(surah.number, surah.name);
-        surahListContainer.appendChild(li);
-    });
-}
+/* نمط الإعدادات */
+.modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
+.modal-content { background: var(--panel); margin: 15% auto; padding: 30px; border: 1px solid var(--accent); width: 300px; border-radius: 15px; text-align: center; }
+.theme-options button { display: block; width: 100%; margin: 10px 0; padding: 10px; cursor: pointer; background: transparent; border: 1px solid var(--accent); color: var(--text); border-radius: 5px; }
+.theme-options button:hover { background: var(--accent); color: #000; }
 
-searchInput.oninput = (e) => {
-    const term = e.target.value;
-    const filtered = allSurahs.filter(s => s.name.includes(term) || s.number.toString().includes(term));
-    displaySurahs(filtered);
-};
+/* الهيكل العام (مبسط ومرن) */
+.app-container { display: flex; height: 100vh; padding: 15px; gap: 15px; }
+.side-panel { width: 300px; background: var(--panel); border: 1px solid rgba(212,175,55,0.2); border-radius: 15px; display: flex; flex-direction: column; }
+.quran-card { flex: 1; background: var(--panel); border: 2px solid var(--accent); border-radius: 15px; padding: 40px; overflow-y: auto; text-align: center; font-size: 2rem; line-height: 2.5; }
+.audio-panel { background: var(--panel); border: 1px solid var(--accent); padding: 15px 30px; border-radius: 15px; display: flex; align-items: center; gap: 20px; }
 
-async function loadSurahContent(id, name) {
-    document.getElementById('surah-title').innerText = "سورة " + name;
-    quranDisplayArea.innerHTML = '<p style="color:#D4AF37">جاري تحميل الآيات...</p>';
-    
-    try {
-        const resText = await fetch(`https://api.alquran.cloud/v1/surah/${id}/ar.uthmani`);
-        const textData = await resText.json();
-        
-        quranDisplayArea.innerHTML = '';
-        textData.data.ayahs.forEach(ayah => {
-            quranDisplayArea.innerHTML += `<span>${ayah.text} <span class="ayah-num">${ayah.numberInSurah}</span></span> `;
-        });
-        
-        // تشغيل الصوت من سيرفر قوي جداً (العفاسي)
-        const formattedId = id.toString().padStart(3, '0');
-        audioObj.src = `https://server8.mp3quran.net/afs/${formattedId}.mp3`;
-        audioObj.play();
-        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-    } catch (err) {
-        quranDisplayArea.innerHTML = 'حدث خطأ في تحميل السورة.';
-    }
-}
+.control-btn { background: var(--accent); border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; }
+.modern-slider { flex: 1; accent-color: var(--accent); }
+.top-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; }
+#settings-btn { background: transparent; border: none; color: var(--accent); font-size: 20px; cursor: pointer; }
 
-playPauseBtn.onclick = () => {
-    if (audioObj.paused) { audioObj.play(); playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; }
-    else { audioObj.pause(); playBtn.innerHTML = '<i class="fas fa-play"></i>'; }
-};
 
-audioObj.ontimeupdate = () => {
-    seekSlider.value = (audioObj.currentTime / audioObj.duration) * 100 || 0;
-    document.getElementById('current-time').innerText = formatTime(audioObj.currentTime);
-    document.getElementById('duration-time').innerText = formatTime(audioObj.duration);
-};
 
-seekSlider.oninput = () => { audioObj.currentTime = (seekSlider.value / 100) * audioObj.duration; };
-
-function formatTime(s) {
-    if (!s) return "0:00";
-    let m = Math.floor(s/60); let sec = Math.floor(s%60);
-    return `${m}:${sec < 10 ? '0'+sec : sec}`;
-}
-
-initApp();
 
