@@ -1,31 +1,71 @@
-/* الألوان الأساسية للثيمات */
-.theme-royal { --bg: #0a111a; --panel: #111a27; --accent: #D4AF37; --text: #e0e0e0; }
-.theme-cosmic { --bg: #050510; --panel: rgba(20, 20, 50, 0.7); --accent: #00d4ff; --text: #ffffff; }
-.theme-classic { --bg: #f4f1ea; --panel: #ffffff; --accent: #2d5a27; --text: #333333; }
+const audio = document.getElementById('main-audio');
+const playBtn = document.getElementById('play-pause');
+const surahListUI = document.getElementById('surah-list');
+const quranDisplay = document.getElementById('quran-display');
 
-body {
-    margin: 0; font-family: 'Amiri', serif;
-    background-color: var(--bg); color: var(--text);
-    transition: all 0.5s ease; height: 100vh; overflow: hidden;
+// 1. نظام تغيير الثيمات
+function setTheme(name) {
+    document.body.className = name;
+    localStorage.setItem('user-theme', name); // حفظ الاختيار
 }
 
-/* نمط الإعدادات */
-.modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
-.modal-content { background: var(--panel); margin: 15% auto; padding: 30px; border: 1px solid var(--accent); width: 300px; border-radius: 15px; text-align: center; }
-.theme-options button { display: block; width: 100%; margin: 10px 0; padding: 10px; cursor: pointer; background: transparent; border: 1px solid var(--accent); color: var(--text); border-radius: 5px; }
-.theme-options button:hover { background: var(--accent); color: #000; }
+document.getElementById('settings-btn').onclick = () => document.getElementById('settings-modal').style.display = 'block';
+document.getElementById('close-modal').onclick = () => document.getElementById('settings-modal').style.display = 'none';
 
-/* الهيكل العام (مبسط ومرن) */
-.app-container { display: flex; height: 100vh; padding: 15px; gap: 15px; }
-.side-panel { width: 300px; background: var(--panel); border: 1px solid rgba(212,175,55,0.2); border-radius: 15px; display: flex; flex-direction: column; }
-.quran-card { flex: 1; background: var(--panel); border: 2px solid var(--accent); border-radius: 15px; padding: 40px; overflow-y: auto; text-align: center; font-size: 2rem; line-height: 2.5; }
-.audio-panel { background: var(--panel); border: 1px solid var(--accent); padding: 15px 30px; border-radius: 15px; display: flex; align-items: center; gap: 20px; }
+// 2. حل مشكلة الصوت - نظام السيرفر الاحتياطي
+async function playSurah(id, name) {
+    document.getElementById('surah-name').innerText = "سورة " + name;
+    quranDisplay.innerHTML = '<div class="hex"><span>⏳</span></div> جاري التحميل...';
+    
+    try {
+        const res = await fetch(`https://api.alquran.cloud/v1/surah/${id}/ar.uthmani`);
+        const data = await res.json();
+        quranDisplay.innerHTML = data.data.ayahs.map(a => `${a.text} <span style="color:var(--accent)">﴿${a.numberInSurah}﴾</span>`).join(' ');
 
-.control-btn { background: var(--accent); border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; }
-.modern-slider { flex: 1; accent-color: var(--accent); }
-.top-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; }
-#settings-btn { background: transparent; border: none; color: var(--accent); font-size: 20px; cursor: pointer; }
+        // محاولة التشغيل من السيرفر الأول
+        const sId = id.toString().padStart(3, '0');
+        audio.src = `https://server8.mp3quran.net/afs/${sId}.mp3`;
+        
+        audio.load();
+        audio.play().catch(() => {
+            // إذا فشل، جرب السيرفر الاحتياطي
+            console.log("السيرفر الأول لم يستجب، جاري تجربة البديل...");
+            audio.src = `https://download.quranicaudio.com/quran/mishari_rashid_al-afasy/${sId}.mp3`;
+            audio.play();
+        });
+        
+        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+    } catch (e) {
+        quranDisplay.innerHTML = "حدث خطأ في الاتصال بالسيرفر.";
+    }
+}
 
+// 3. جلب القائمة والبحث
+let allSurahs = [];
+async function init() {
+    const res = await fetch('https://api.alquran.cloud/v1/surah');
+    const data = await res.json();
+    allSurahs = data.data;
+    render(allSurahs);
+    
+    const savedTheme = localStorage.getItem('user-theme') || 'theme-cosmic';
+    setTheme(savedTheme);
+}
 
+function render(list) {
+    surahListUI.innerHTML = list.map(s => `<li onclick="playSurah(${s.number}, '${s.name}')">${s.number}. ${s.name}</li>`).join('');
+}
 
+document.getElementById('surah-search').oninput = (e) => {
+    const filtered = allSurahs.filter(s => s.name.includes(e.target.value));
+    render(filtered);
+};
 
+init();
+
+// تحكم الوقت والمشغل
+playBtn.onclick = () => audio.paused ? (audio.play(), playBtn.innerHTML='<i class="fas fa-pause"></i>') : (audio.pause(), playBtn.innerHTML='<i class="fas fa-play"></i>');
+audio.ontimeupdate = () => {
+    document.getElementById('seek-slider').value = (audio.currentTime / audio.duration) * 100 || 0;
+    document.getElementById('current-time').innerText = Math.floor(audio.currentTime/60) + ":" + (Math.floor(audio.currentTime%60)).toString().padStart(2,'0');
+};
