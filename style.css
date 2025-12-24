@@ -1,105 +1,142 @@
-/* الألوان الراقية بلمسات لمعان */
-.theme-royal { 
-    --bg: #03080f; 
-    --panel: rgba(13, 22, 36, 0.6); 
-    --accent: #D4AF37; 
-    --glow: rgba(212, 175, 55, 0.3);
-}
-.theme-cosmic { 
-    --bg: #020205; 
-    --panel: rgba(15, 15, 35, 0.5); 
-    --accent: #00f2ff; 
-    --glow: rgba(0, 242, 255, 0.2);
+:root {
+    --midnight: #02060f;
+    --deep-blue: #050b16;
+    --matte-gold: #c5a059; /* ذهبي مطفي فخم */
+    --gold-glow: rgba(197, 160, 89, 0.2);
+    --text-white: #f8f9fa;
+    --text-gray: #a0a4a8;
 }
 
 body {
-    margin: 0; font-family: 'Amiri', serif;
-    background-color: var(--bg);
-    color: #e0e0e0; transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    height: 100vh; overflow: hidden; direction: rtl;
-    /* إضافة لمسة ضوئية ناعمة تتحرك في الخلفية */
-    background-image: radial-gradient(circle at 50% -20%, var(--glow), transparent 50%);
+    margin: 0;
+    font-family: 'Amiri', serif;
+    background-color: var(--midnight);
+    /* تدرج كوني عميق */
+    background-image: 
+        radial-gradient(circle at top, var(--deep-blue), var(--midnight)),
+        url('https://www.transparenttextures.com/patterns/stardust.png');
+    color: var(--text-white);
+    height: 100vh;
+    overflow: hidden;
+    direction: rtl;
 }
 
-.app-container { 
-    display: flex; height: 100vh; padding: 30px; gap: 30px; 
-    backdrop-filter: blur(5px);
+/* نمط هندسي خفي في الخلفية */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url('https://www.transparenttextures.com/patterns/islamic-art.png');
+    opacity: 0.05;
+    z-index: -1;
 }
 
-/* القائمة الجانبية: بدون حدود حادة، تعتمد على الظل الضوئي */
-.side-panel { 
-    width: 320px; background: var(--panel); 
-    border-radius: 30px; display: flex; flex-direction: column;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 20px var(--glow);
-    border: none; /* إلغاء الخطوط */
+.app-container {
+    display: flex;
+    height: 100vh;
+    padding: 30px;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
+}
+
+/* القائمة الجانبية */
+.side-panel {
+    width: 320px;
+    height: 85vh;
+    background: rgba(5, 11, 22, 0.7);
+    border: 1px solid rgba(197, 160, 89, 0.3);
+    border-radius: 30px;
     backdrop-filter: blur(20px);
+    display: flex;
+    flex-direction: column;
 }
 
-/* منطقة القرآن: إبداع هندسي بصري */
-.quran-container {
-    flex: 1; background: var(--panel); 
-    border-radius: 35px; padding: 60px;
-    overflow-y: auto; text-align: center; font-size: 2.5rem; line-height: 3;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.6), inset 0 0 40px rgba(0,0,0,0.3);
-    position: relative;
-    border: none;
+.sidebar-top { display: flex; align-items: center; gap: 15px; padding: 25px; }
+.gold-icon { color: var(--matte-gold); font-size: 1.2rem; }
+.matte-gold-text { color: var(--matte-gold); margin: 0; }
+
+.search-container { padding: 0 25px 20px; position: relative; }
+#surah-search {
+    width: 100%;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(197, 160, 89, 0.4);
+    border-radius: 12px;
+    padding: 12px 15px;
+    color: white;
+    outline: none;
 }
 
-/* إضافة أشكال هندسية راقية في الخلفية (Watermark) */
-.quran-container::before {
-    content: ""; position: absolute; top: 10%; left: 10%; width: 80%; height: 80%;
-    background: url('https://www.transparenttextures.com/patterns/hexellence.png'); /* نقش هندسي راقي */
-    opacity: 0.05; pointer-events: none;
-}
-
-/* الآيات وتأثير اللمعان */
-.quran-container span {
-    transition: 0.3s;
-    text-shadow: 0 0 15px rgba(255,255,255,0.1);
-}
-.quran-container span:hover {
-    color: var(--accent);
-    text-shadow: 0 0 20px var(--glow);
-}
-
-/* رقم الآية بشكل هندسي راقي */
-.ayah-num {
-    color: var(--accent); font-size: 1.3rem; margin: 0 10px;
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 45px; height: 45px;
-    background: radial-gradient(circle, var(--glow), transparent);
-    border-radius: 12px; transform: rotate(45deg); /* شكل معيني */
-}
-.ayah-num b { transform: rotate(-45deg); } /* تعديل الرقم داخل المعين */
-
-/* مشغل الصوت: تصميم عائم (Floating) */
-.player-panel { 
-    background: var(--panel); border-radius: 40px; 
-    padding: 20px 50px; display: flex; align-items: center; gap: 30px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.7), 0 0 15px var(--glow);
-    margin-top: 20px; border: none;
-}
-
-.play-btn { 
-    background: linear-gradient(135deg, var(--accent), #fff); 
-    color: #000; border: none; width: 60px; height: 60px; 
-    border-radius: 50%; cursor: pointer; font-size: 22px;
-    box-shadow: 0 0 25px var(--glow); transition: 0.4s;
-}
-.play-btn:hover { transform: scale(1.1) rotate(10deg); filter: brightness(1.2); }
-
-/* شريط التقدم: نحيف وراقي */
-input[type="range"] { 
-    flex: 1; accent-color: var(--accent); height: 4px; 
-    background: rgba(255,255,255,0.1); border-radius: 10px;
-}
-
-/* القائمة (السور) */
+.surah-menu { flex: 1; overflow-y: auto; list-style: none; padding: 10px; }
 .surah-menu li {
-    padding: 18px 25px; margin: 5px 15px; border-radius: 15px;
-    transition: 0.4s; border: none; background: rgba(255,255,255,0.02);
+    padding: 15px 20px;
+    margin-bottom: 5px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+    background: rgba(255,255,255,0.02);
 }
-.surah-menu li:hover {
-    background: var(--glow); color: var(--accent);
-    transform: translateX(-10px); /* حركة انسيابية للجنب */
+.surah-menu li:hover { background: var(--gold-glow); color: var(--matte-gold); }
+
+/* البطاقة المركزية (جسم الهاتف) */
+.main-content {
+    flex: 1;
+    max-width: 800px;
+    height: 85vh;
+    background: var(--deep-blue);
+    border: 1.5px solid var(--matte-gold);
+    border-radius: 50px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: 0 0 60px rgba(0,0,0,0.8);
 }
+
+.top-logo-area { text-align: center; padding-top: 30px; }
+.islamic-star {
+    width: 70px; height: 70px;
+    background: var(--midnight);
+    margin: 0 auto;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    border: 1.5px solid var(--matte-gold);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 20px var(--gold-glow);
+}
+.kaaba-icon { font-size: 25px; filter: drop-shadow(0 0 5px var(--matte-gold)); }
+
+.display-screen { flex: 1; overflow-y: auto; padding: 40px; text-align: center; }
+.matte-gold-title { color: var(--matte-gold); font-family: 'Reem Kufi', sans-serif; font-size: 2.5rem; margin-bottom: 10px; }
+.sub-text-light { color: var(--text-gray); font-size: 1.2rem; }
+
+.quran-text-flow { font-size: 2.4rem; line-height: 2.8; }
+.ayah-num {
+    color: var(--matte-gold);
+    display: inline-flex;
+    width: 40px; height: 40px;
+    border: 1px solid var(--matte-gold);
+    align-items: center; justify-content: center;
+    font-size: 1.1rem; margin: 0 10px;
+    transform: rotate(45deg);
+}
+.ayah-num b { transform: rotate(-45deg); }
+
+/* المشغل السفلي */
+.player-panel {
+    background: rgba(2, 6, 15, 0.95);
+    padding: 20px 50px;
+    border-top: 1px solid rgba(197, 160, 89, 0.3);
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+    display: flex; align-items: center; gap: 30px;
+}
+
+.main-play-btn {
+    background: var(--matte-gold);
+    color: var(--midnight);
+    border: none; width: 60px; height: 60px;
+    border-radius: 50%; cursor: pointer; font-size: 22px;
+}
+
+.track-info { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+.gold-slider { accent-color: var(--matte-gold); height: 4px; cursor: pointer; }
+.time-row { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-gray); }
