@@ -3,59 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المصحف الشريف - الثيم الملكي</title>
+    <title>المصحف الشريف - الثيمات المتعددة</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Reem+Kufi:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-
-<div class="app-container">
+<body class="theme-royal"> <div class="app-container">
     <aside class="side-panel">
         <div class="header-box">
-            <h1>المصحف الشريف</h1>
+            <div class="top-row">
+                <h1>المصحف الشريف</h1>
+                <button id="settings-btn"><i class="fas fa-cog"></i></button>
+            </div>
             <div class="search-container">
-                <i class="fas fa-search search-icon"></i>
                 <input type="text" id="surah-search" placeholder="ابحث عن سورة...">
             </div>
         </div>
-        <ul id="surah-list" class="surah-navigation">
-            <li class="loading-text">جاري جلب السور...</li>
-        </ul>
+        <ul id="surah-list" class="surah-navigation"></ul>
     </aside>
 
     <main class="main-content">
         <div id="quran-display" class="quran-card">
-            <div class="welcome-message">
-                <i class="fas fa-quran fa-3x" style="color: var(--gold); margin-bottom: 20px; opacity: 0.8;"></i>
-                <h2>مرحباً بك في المصحف الإلكتروني</h2>
-                <p>اختر سورة مباركة من القائمة الجانبية للبدء</p>
-            </div>
+            <div class="welcome-msg">اختر سورة للبدء</div>
         </div>
 
         <footer class="audio-panel">
-            <div class="player-controls">
-                <button id="play-pause" class="control-btn">
-                    <i class="fas fa-play"></i>
-                </button>
+            <button id="play-pause" class="control-btn"><i class="fas fa-play"></i></button>
+            <div class="progress-section">
+                <span id="current-time">0:00</span>
+                <input type="range" id="seek-slider" class="modern-slider" value="0">
+                <span id="duration-time">0:00</span>
             </div>
-
-            <div class="progress-container">
-                <span id="current-time" class="time-stamp">0:00</span>
-                <input type="range" id="seek-slider" class="modern-slider" value="0" max="100">
-                <span id="duration-time" class="time-stamp">0:00</span>
-            </div>
-
             <div class="info-badge">
-                <span id="active-surah-name">انتظار اختيار سورة</span>
-                <div class="reciter-tag">مشاري العفاسي</div>
+                <span id="active-surah">مشاري العفاسي</span>
             </div>
-
             <audio id="main-audio-player" crossorigin="anonymous"></audio>
         </footer>
     </main>
+
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <h3>إعدادات المظهر</h3>
+            <div class="theme-options">
+                <button onclick="changeTheme('theme-royal')">الثيم الملكي (كحلي وذهبي)</button>
+                <button onclick="changeTheme('theme-cosmic')">الثيم الكوني (نجوم وفضاء)</button>
+                <button onclick="changeTheme('theme-classic')">الثيم الكلاسيكي (فاتح ومريح)</button>
+            </div>
+            <button id="close-settings">إغلاق</button>
+        </div>
+    </div>
 </div>
 
 <script src="app.js"></script>
 </body>
 </html>
+
