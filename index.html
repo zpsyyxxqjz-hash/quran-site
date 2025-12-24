@@ -3,53 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المصحف الشريف - الثيمات المتعددة</title>
+    <title>المصحف الإلكتروني - نظام الثيمات</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Reem+Kufi:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="theme-royal"> <div class="app-container">
+<body class="theme-cosmic"> <div class="app-container">
     <aside class="side-panel">
         <div class="header-box">
-            <div class="top-row">
+            <div class="header-top">
                 <h1>المصحف الشريف</h1>
-                <button id="settings-btn"><i class="fas fa-cog"></i></button>
+                <button id="settings-btn" title="الإعدادات"><i class="fas fa-cog"></i></button>
             </div>
-            <div class="search-container">
+            <div class="search-box">
                 <input type="text" id="surah-search" placeholder="ابحث عن سورة...">
             </div>
         </div>
-        <ul id="surah-list" class="surah-navigation"></ul>
+        <ul id="surah-list" class="surah-menu"></ul>
     </aside>
 
-    <main class="main-content">
-        <div id="quran-display" class="quran-card">
-            <div class="welcome-msg">اختر سورة للبدء</div>
+    <main class="content-area">
+        <div id="quran-display" class="quran-container">
+            <div class="hex-welcome">
+                <div class="hex"><span>🕋</span></div>
+                <h2>طابت أوقاتكم بذكر الله</h2>
+                <p>اختر سورة للبدء بالقراءة والاستماع</p>
+            </div>
         </div>
 
-        <footer class="audio-panel">
-            <button id="play-pause" class="control-btn"><i class="fas fa-play"></i></button>
-            <div class="progress-section">
+        <footer class="player-panel">
+            <button id="play-pause" class="play-btn"><i class="fas fa-play"></i></button>
+            <div class="progress-wrapper">
                 <span id="current-time">0:00</span>
-                <input type="range" id="seek-slider" class="modern-slider" value="0">
+                <input type="range" id="seek-slider" value="0">
                 <span id="duration-time">0:00</span>
             </div>
-            <div class="info-badge">
-                <span id="active-surah">مشاري العفاسي</span>
+            <div class="reciter-info">
+                <span id="surah-name">مشاري العفاسي</span>
             </div>
-            <audio id="main-audio-player" crossorigin="anonymous"></audio>
+            <audio id="main-audio" crossorigin="anonymous"></audio>
         </footer>
     </main>
 
     <div id="settings-modal" class="modal">
         <div class="modal-content">
             <h3>إعدادات المظهر</h3>
-            <div class="theme-options">
-                <button onclick="changeTheme('theme-royal')">الثيم الملكي (كحلي وذهبي)</button>
-                <button onclick="changeTheme('theme-cosmic')">الثيم الكوني (نجوم وفضاء)</button>
-                <button onclick="changeTheme('theme-classic')">الثيم الكلاسيكي (فاتح ومريح)</button>
+            <div class="theme-grid">
+                <button class="t-btn t-royal" onclick="setTheme('theme-royal')">الملكي (ذهبي وكحلي)</button>
+                <button class="t-btn t-cosmic" onclick="setTheme('theme-cosmic')">الكوني (نجوم وفضاء)</button>
+                <button class="t-btn t-classic" onclick="setTheme('theme-classic')">الكلاسيكي (هادئ)</button>
             </div>
-            <button id="close-settings">إغلاق</button>
+            <button id="close-modal">حفظ وإغلاق</button>
         </div>
     </div>
 </div>
