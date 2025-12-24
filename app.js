@@ -1,134 +1,73 @@
-// تعريف العناصر الأساسية
 const audio = document.getElementById('main-audio');
 const playBtn = document.getElementById('play-pause');
 const surahListUI = document.getElementById('surah-list');
 const quranDisplay = document.getElementById('quran-display');
+const welcomeArea = document.getElementById('welcome-area');
 const seekSlider = document.getElementById('seek-slider');
-const currentTimeSpan = document.getElementById('current-time');
-const durationTimeSpan = document.getElementById('duration-time');
-const surahNameDisplay = document.getElementById('surah-name');
-const searchInput = document.getElementById('surah-search');
 
-let allSurahs = []; // تخزين قائمة السور للبحث
+let allSurahs = [];
 
-// 1. نظام الثيمات الراقي
-function setTheme(themeName) {
-    document.body.className = themeName;
-    localStorage.setItem('user-theme', themeName);
-}
-
-// أزرار الإعدادات (المودال)
-document.getElementById('settings-btn').onclick = () => {
-    document.getElementById('settings-modal').style.display = 'flex';
-};
-
-document.getElementById('close-modal').onclick = () => {
-    document.getElementById('settings-modal').style.display = 'none';
-};
-
-// 2. جلب قائمة السور عند تشغيل التطبيق
-async function initApp() {
+// جلب السور
+async function init() {
     try {
-        const response = await fetch('https://api.alquran.cloud/v1/surah');
-        const json = await response.json();
-        allSurahs = json.data;
-        renderSurahList(allSurahs);
-
-        // استعادة الثيم المفضل للمستخدم
-        const savedTheme = localStorage.getItem('user-theme') || 'theme-royal';
-        setTheme(savedTheme);
-    } catch (error) {
-        surahListUI.innerHTML = '<li class="error-msg">فشل في تحميل قائمة السور</li>';
-    }
+        const res = await fetch('https://api.alquran.cloud/v1/surah');
+        const data = await res.json();
+        allSurahs = data.data;
+        renderList(allSurahs);
+    } catch (e) { console.error("Error loading surahs"); }
 }
 
-// 3. عرض السور في القائمة الجانبية
-function renderSurahList(list) {
-    surahListUI.innerHTML = list.map(surah => `
-        <li onclick="loadSurah(${surah.number}, '${surah.name}')">
-            <span class="surah-num-small">${surah.number}</span>
-            <span class="surah-name-text">${surah.name}</span>
+function renderList(list) {
+    surahListUI.innerHTML = list.map(s => `
+        <li onclick="loadSurah(${s.number}, '${s.name}')">
+            <span>${s.number}. ${s.name}</span>
         </li>
     `).join('');
 }
 
-// 4. تحميل السورة (النص + الصوت الاحترافي)
+// تحميل السورة
 async function loadSurah(id, name) {
-    surahNameDisplay.innerText = "سورة " + name;
-    // تأثير التحميل الراقي
-    quranDisplay.innerHTML = '<div class="loading-state">جاري جلب الآيات الكريمة...</div>';
+    welcomeArea.style.display = 'none';
+    document.getElementById('active-surah-name').innerText = "سورة " + name;
+    quranDisplay.innerHTML = '<p style="color: var(--matte-gold); opacity: 0.6;">جاري التحميل...</p>';
     
     try {
-        // جلب نص الآيات
-        const resText = await fetch(`https://api.alquran.cloud/v1/surah/${id}/ar.uthmani`);
-        const dataText = await resText.json();
+        const res = await fetch(`https://api.alquran.cloud/v1/surah/${id}/ar.uthmani`);
+        const data = await res.json();
         
-        // عرض النص مع الشكل الهندسي (المعين) لرقم الآية كما طلبت
-        quranDisplay.innerHTML = dataText.data.ayahs.map(ayah => `
-            <span class="ayah-item">
-                ${ayah.text} 
-                <span class="ayah-num"><b>${ayah.numberInSurah}</b></span>
-            </span>
+        quranDisplay.innerHTML = data.data.ayahs.map(a => `
+            <span>${a.text} <span class="ayah-num"><b>${a.numberInSurah}</b></span></span>
         `).join(' ');
 
-        // ضبط مصدر الصوت (الشيخ العفاسي) - نظام السيرفر المستقر
-        const formattedId = id.toString().padStart(3, '0');
-        audio.src = `https://server8.mp3quran.net/afs/${formattedId}.mp3`;
-        
-        audio.load();
-        audio.play().then(() => {
-            playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        }).catch(err => {
-            // محاولة ثانية بسيرفر احتياطي إذا فشل الأول
-            audio.src = `https://download.quranicaudio.com/quran/mishari_rashid_al-afasy/${formattedId}.mp3`;
-            audio.play();
-        });
-
-    } catch (err) {
-        quranDisplay.innerHTML = '<div class="error-msg">حدث خطأ أثناء تحميل السورة.</div>';
-    }
-}
-
-// 5. التحكم في المشغل (Play / Pause)
-playBtn.onclick = () => {
-    if (audio.paused) {
+        const sId = id.toString().padStart(3, '0');
+        audio.src = `https://server8.mp3quran.net/afs/${sId}.mp3`;
         audio.play();
         playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-    } else {
-        audio.pause();
-        playBtn.innerHTML = '<i class="fas fa-play"></i>';
-    }
+    } catch (e) { quranDisplay.innerHTML = "حدث خطأ في الاتصال."; }
+}
+
+// التحكم
+playBtn.onclick = () => {
+    if (audio.paused) { audio.play(); playBtn.innerHTML = '<i class="fas fa-pause"></i>'; }
+    else { audio.pause(); playBtn.innerHTML = '<i class="fas fa-play"></i>'; }
 };
 
-// 6. تحديث الوقت وشريط التقدم (Progress Bar)
 audio.ontimeupdate = () => {
     const progress = (audio.currentTime / audio.duration) * 100 || 0;
     seekSlider.value = progress;
-    currentTimeSpan.innerText = formatTime(audio.currentTime);
-    durationTimeSpan.innerText = formatTime(audio.duration);
+    document.getElementById('current-time').innerText = formatTime(audio.currentTime);
 };
 
-// التنقل عبر شريط التقدم
-seekSlider.oninput = () => {
-    audio.currentTime = (seekSlider.value / 100) * audio.duration;
-};
-
-// دالة تنسيق الوقت
-function formatTime(seconds) {
-    if (!seconds) return "0:00";
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs < 10 ? '0' + secs : secs}`;
+function formatTime(s) {
+    const m = Math.floor(s/60); const sec = Math.floor(s%60);
+    return `${m}:${sec < 10 ? '0'+sec : sec}`;
 }
 
-// 7. وظيفة البحث السريع
-searchInput.oninput = (e) => {
-    const term = e.target.value.trim();
-    const filtered = allSurahs.filter(s => 
-        s.name.includes(term) || s.number.toString().includes(term)
-    );
-    renderSurahList(filtered);
+// البحث
+document.getElementById('surah-search').oninput = (e) => {
+    const term = e.target.value;
+    const filtered = allSurahs.filter(s => s.name.includes(term));
+    renderList(filtered);
 };
 
-// بدء تشغيل التطبيق
-initApp();
+init();
